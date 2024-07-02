@@ -20,8 +20,7 @@ table:
     - Impact: data.impact
     - Description: data.short_description.problem
     - Category: data.category
-    - Potential yearly savings based on retail pricing: data.potential_yearly_savings_based_on_retail_pricing_display
-    - Impacted resource name: data.impacted_resource_name
+    - Impacted resource name: data.impacted_value_display
     - Impacted resource: data.impacted_field
     - Last updated at: data.last_updated
 
