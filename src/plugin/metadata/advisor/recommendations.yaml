@@ -1,0 +1,38 @@
+---
+search:
+  fields:
+    - Tenant ID: data.tenant_id
+    - Subscription Name: data.subscription_name
+    - Subscription ID: data.subscription_id
+    - Impact: data.impact
+    - Category: data.category
+    - Last updated at: data.last_updated
+
+
+table:
+  sort:
+    key: data.impact
+    desc: true
+  fields:
+    - Impact: data.impact
+    - Description: data.short_description.problem
+    - Category: data.category
+    - Potential benefits: data.potential_benefits
+    - Last updated at: data.last_update_time
+    - Impact start time: data.impact_start_time
+    - End time: data.impact_mitigation_time
+
+tabs.0:
+  name: Details
+  type: item
+  fields:
+    - Tenant ID: data.tenant_id
+    - Subscription Name: data.subscription_name
+    - Subscription ID: data.subscription_id
+    - Recommendation name: data.name
+    - Impact: data.impact
+    - Category: data.category
+    - End time: data.impact_mitigation_time
+    - Last update time: data.last_update_time
+
+
