@@ -39,10 +39,11 @@ class RecommendationCostManager(AzureBaseManager):
                 category = recommendation_info.get("category")
                 self.cloud_service_type = category
 
-                potential_yearly_savings_based_on_retail_pricing = recommendation_info.get("extended_properties").get(
-                    "annualSavingsAmount")
-                recommendation_info["potential_yearly_savings_based_on_retail_pricing_display"] = float(
-                    potential_yearly_savings_based_on_retail_pricing)
+                extended_properties = recommendation_info.get("extended_properties", {}) or {}
+                if extended_properties:
+                    potential_yearly_savings_based_on_retail_pricing = extended_properties.get("annualSavingsAmount")
+                    recommendation_info["potential_yearly_savings_based_on_retail_pricing_display"] = float(
+                        potential_yearly_savings_based_on_retail_pricing)
 
                 if recommendation_info.get("impacted_field") == "Microsoft.Subscriptions/subscriptions":
                     recommendation_info["impacted_value_display"] = recommendation_info.get("subscription_name")
@@ -65,7 +66,7 @@ class RecommendationCostManager(AzureBaseManager):
                     )
                 )
             except Exception as e:
-                _LOGGER.error(f"[create_cloud_service] Error {self.service} {e}")
+                _LOGGER.error(f"[create_cloud_service] Error {self.service} {e}", exc_info=True)
                 error_responses.append(
                     make_error_response(
                         error=e,
@@ -92,17 +93,6 @@ class RecommendationCostManager(AzureBaseManager):
                 "spaceone:icon": f"{ICON_URL}/azure-advisor.svg"
             }
         )
-
-    @staticmethod
-    def _create_impact_updates_display(updates: list, impacted_service: str, impacted_region: dict) -> list:
-        impact_updates_display = []
-        for update in updates:
-            update.update(
-                {"impacted_service_display": impacted_service,
-                 "impacted_region_display": impacted_region.get("impacted_region")}
-            )
-            impact_updates_display.append(update)
-        return impact_updates_display
 
     @staticmethod
     def _get_name_from_short_description(short_description: dict) -> str:

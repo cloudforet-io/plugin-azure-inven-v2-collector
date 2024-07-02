@@ -14,13 +14,13 @@ table:
     key: data.impact
     desc: true
   fields:
+    - Recommendation name: data.name
     - Impact: data.impact
     - Description: data.short_description.problem
     - Category: data.category
-    - Potential benefits: data.potential_benefits
-    - Last updated at: data.last_update_time
-    - Impact start time: data.impact_start_time
-    - End time: data.impact_mitigation_time
+    - Impacted resource name: data.impacted_value_display
+    - Impacted resource: data.impacted_field
+    - Last updated at: data.last_updated
 
 
 tabs.0:
