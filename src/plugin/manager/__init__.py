@@ -1,0 +1,7 @@
+from plugin.manager.service_health.health_history_manager import HealthHistoryManager
+from plugin.manager.advisor.recommendation_cost_manager import RecommendationCostManager
+from plugin.manager.advisor.recommendation_security_manager import RecommendationSecurityManager
+from plugin.manager.advisor.recommendation_operational_excellence_manager import \
+    RecommendationOperationalExcellenceManager
+from plugin.manager.advisor.recommendation_performance_manager import RecommendationPerformanceManager
+from plugin.manager.advisor.recommendation_reliability_manager import RecommendationReliabilityManager

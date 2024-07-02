@@ -1,0 +1,6 @@
+spaceone-api
+azure-identity
+azure-mgmt-resource
+azure-mgmt-resourcegraph
+azure-mgmt-resourcehealth
+azure-mgmt-advisor==10.0.0b1
