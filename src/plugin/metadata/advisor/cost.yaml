@@ -20,7 +20,6 @@ table:
     desc: false
   fields:
     - Impact: data.impact
-    - Description: data.short_description.problem
     - Category: data.category
     - Potential yearly savings based on retail pricing: data.potential_yearly_savings_based_on_retail_pricing_display
     - Currency: data.extended_properties.savingsCurrency
