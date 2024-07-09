@@ -28,14 +28,6 @@ class RecommendationReliabilityManager(AzureBaseManager):
         recommendation_filter = "Category eq 'HighAvailability'"
         recommendations = advisor_conn.list_recommendations(recommendation_filter=recommendation_filter)
 
-        # metadata = advisor_conn.list_metadata()
-        # print("metadata start")
-        # for meta in metadata:
-        #     meta_info = self.convert_nested_dictionary(meta)
-        #     print(meta_info)
-        #     print("===========================")
-        #
-        # print("metadata end")
         for recommendation in recommendations:
             try:
                 recommendation_info = self.convert_nested_dictionary(recommendation)
@@ -45,8 +37,7 @@ class RecommendationReliabilityManager(AzureBaseManager):
                     "subscription_name": subscription_info.get("display_name"),
                 })
 
-                recommendation_info["impacted_value_display"] = recommendation_info.get("impacted_value",
-                                                                                        "subscription_name")
+                recommendation_info["impacted_value_display"] = recommendation_info.get("impacted_value", )
                 short_description = recommendation_info.get("short_description")
                 extended_properties = recommendation_info.get("extended_properties", {}) or {}
 
@@ -108,4 +99,8 @@ class RecommendationReliabilityManager(AzureBaseManager):
 
     @staticmethod
     def _get_region_from_extended_properties(extended_properties: dict) -> Union[str, None]:
-        return extended_properties.get("region", None)
+        if region := extended_properties.get("region"):
+            return region
+        elif region := extended_properties.get("Location"):
+            return region
+        return region

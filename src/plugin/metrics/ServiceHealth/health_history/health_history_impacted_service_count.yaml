@@ -18,8 +18,6 @@ query_options:
       reference:
         resource_type: inventory.Region
         reference_key: region_code
-    - key: data.impacted_services_display
-      name: Impacted Service
     - key: data.tenant_id
       name: Tenant ID
     - key: data.subscription_name
