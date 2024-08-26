@@ -32,6 +32,8 @@ query_options:
       name: Subscription ID
     - key: data.title
       name: Title
+    - key: data.name
+      name: Tracking ID
   fields:
     value:
       operator: count

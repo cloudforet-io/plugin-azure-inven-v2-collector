@@ -22,11 +22,11 @@ query_options:
     - key: data.extended_properties.term
       name: Term
       default: true
-    - key: data.extended_properties.lookbackPeriod (days)
+    - key: data.extended_properties.lookbackPeriod
       name: Look-back period (days)
       default: true
   fields:
     value:
       operator: count
 namespace_id: ns-azure-advisor-cost
-version: '1.0'
+version: '1.1'
