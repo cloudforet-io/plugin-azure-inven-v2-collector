@@ -30,6 +30,8 @@ query_options:
     - key: data.title
       name: Title
       default: true
+    - key: data.name
+      name: Tracking ID
   fields:
     value:
       operator: count
