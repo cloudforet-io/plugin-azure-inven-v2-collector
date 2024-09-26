@@ -7,7 +7,7 @@ from plugin.connector.advisor.advisor_connector import AdvisorConnector
 from plugin.connector.subscriptions.subscriptions_connector import SubscriptionsConnector
 from plugin.manager.base import AzureBaseManager
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger("spaceone")
 
 
 class RecommendationCostManager(AzureBaseManager):
@@ -86,8 +86,8 @@ class RecommendationCostManager(AzureBaseManager):
             provider=self.provider,
             service_code=self.service_code,
             metadata_path=self.get_metadata_path(),
-            is_primary=True,
-            is_major=True,
+            is_primary=False,
+            is_major=False,
             labels=["Management"],
             tags={
                 "spaceone:icon": f"{ICON_URL}/azure-advisor.svg"

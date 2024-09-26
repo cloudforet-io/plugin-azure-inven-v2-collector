@@ -1,6 +1,6 @@
 ---
 metric_id: metric-azure-advisor-cost-count
-name: Recommendation Count
+name: Cost Recommendation Count
 metric_type: GAUGE
 resource_type: inventory.CloudService:azure.Advisor.Cost
 query_options:
@@ -28,5 +28,6 @@ query_options:
   fields:
     value:
       operator: count
-namespace_id: ns-azure-advisor-cost
-version: '1.1'
+unit: Count
+namespace_id: ns-azure-advisor-recommendations
+version: '1.2'

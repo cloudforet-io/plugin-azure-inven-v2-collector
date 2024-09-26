@@ -5,3 +5,5 @@ from plugin.manager.advisor.recommendation_operational_excellence_manager import
     RecommendationOperationalExcellenceManager
 from plugin.manager.advisor.recommendation_performance_manager import RecommendationPerformanceManager
 from plugin.manager.advisor.recommendation_reliability_manager import RecommendationReliabilityManager
+from plugin.manager.advisor.advisor_score_manager import ScoreManager
+# from .kubernetes_services.cluster_manager import ClusterManager

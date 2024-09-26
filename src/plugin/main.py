@@ -30,6 +30,7 @@ def collector_init(params: dict) -> dict:
             'metadata': 'dict'
         }
     """
+
     metadata = {
         "options_schema": {
             "type": "object",
@@ -39,7 +40,7 @@ def collector_init(params: dict) -> dict:
                     "type": "string",
                     "items": {"type": "string"},
                     "default": "All",
-                    "enum": ["All", "Advisor", "ServiceHealth"],
+                    "enum": _get_all_cloud_service_groups(),
                     "description": "Choose one of the service to collect data. If you choose 'All', it will collect all services."
                 }
             }
@@ -140,6 +141,7 @@ def collector_collect(params: dict) -> dict:
     domain_id: str = params["domain_id"]
     subscription_id = secret_data.get("subscription_id")
 
+    print(secret_data)
     _check_secret_data(secret_data)
 
     start_time = time.time()
@@ -225,3 +227,11 @@ def _check_secret_data(secret_data: dict):
 
     if "client_secret" not in secret_data:
         raise ERROR_REQUIRED_PARAMETER(key='secret_data.client_secret')
+
+
+def _get_all_cloud_service_groups():
+    cloud_service_groups = ["ALL"]
+    for manager in AzureBaseManager.list_managers_by_cloud_service_groups([]):
+        if manager.cloud_service_group:
+            cloud_service_groups.append(manager.cloud_service_group)
+    return list(set(cloud_service_groups))
