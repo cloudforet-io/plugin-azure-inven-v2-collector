@@ -1,6 +1,6 @@
 ---
 metric_id: metric-azure-advisor-cost-saving
-name: Recommendation Cost Saving
+name: Cost Savings Recommendation
 metric_type: GAUGE
 resource_type: inventory.CloudService:azure.Advisor.Cost
 query_options:
@@ -30,5 +30,5 @@ query_options:
       key: data.potential_yearly_savings_based_on_retail_pricing_display
       operator: sum
 unit: USD
-namespace_id: ns-azure-advisor-cost
-version: '1.0'
+namespace_id: ns-azure-advisor-recommendations
+version: '1.1'

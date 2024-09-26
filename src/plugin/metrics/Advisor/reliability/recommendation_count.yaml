@@ -1,6 +1,6 @@
 ---
 metric_id: metric-azure-advisor-reliability-count
-name: Recommendation Count
+name: Reliability Recommendation Count
 metric_type: GAUGE
 resource_type: inventory.CloudService:azure.Advisor.Reliability
 query_options:
@@ -22,5 +22,6 @@ query_options:
   fields:
     value:
       operator: count
-namespace_id: ns-azure-advisor-reliability
-version: '1.0'
+unit: Count
+namespace_id: ns-azure-advisor-recommendations
+version: '1.1'

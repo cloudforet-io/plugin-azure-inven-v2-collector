@@ -19,3 +19,11 @@ class AdvisorConnector(AzureBaseConnector):
 
     def list_metadata(self):
         return self.advisor_client.recommendation_metadata.list(expand="ibiza")
+
+    def list_scores(self, subscription_id: str) -> dict:
+        url = f"https://management.azure.com/subscriptions/{subscription_id}/providers/Microsoft.Advisor/advisorScore?api-version=2023-01-01"
+        return self.request_azure_api(url, method="GET")
+
+    def get_score(self, subscription_id: str, score_name: str):
+        url = f"https://management.azure.com/subscriptions/{subscription_id}/providers/Microsoft.Advisor/advisorScore/{score_name}?api-version=2023-01-01"
+        return self.request_azure_api(url, method="GET")

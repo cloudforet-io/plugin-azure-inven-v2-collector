@@ -1,9 +1,16 @@
 ---
-metric_id: metric-azure-advisor-summary
-name: Advisor Summary
+metric_id: metric-azure-advisor-recommendations
+name: Advisor Recommendations
 metric_type: GAUGE
-resource_type: inventory.CloudService:azure.Advisor
+resource_type: inventory.CloudService
 query_options:
+  filter:
+    - key: provider
+      value: azure
+      operator: eq
+    - key: cloud_service_group
+      value: Advisor
+      operator: eq
   group_by:
     - key: data.impact
       name: Impact
@@ -22,5 +29,6 @@ query_options:
   fields:
     value:
       operator: count
-namespace_id: ns-azure-advisor-summary
+unit: Count
+namespace_id: ns-azure-advisor-recommendations
 version: '1.0'

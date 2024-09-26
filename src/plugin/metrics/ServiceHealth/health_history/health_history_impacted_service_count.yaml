@@ -35,5 +35,6 @@ query_options:
   fields:
     value:
       operator: count
+unit: Count
 namespace_id: ns-azure-service-health-health-history
 version: '1.0'

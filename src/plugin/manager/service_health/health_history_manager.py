@@ -9,7 +9,7 @@ from plugin.connector.service_health.service_health_connector import ServiceHeal
 from plugin.connector.subscriptions.subscriptions_connector import SubscriptionsConnector
 from plugin.manager.base import AzureBaseManager
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger("spaceone")
 
 
 class HealthHistoryManager(AzureBaseManager):
@@ -29,8 +29,11 @@ class HealthHistoryManager(AzureBaseManager):
 
         subscription_obj = subscription_conn.get_subscription(secret_data["subscription_id"])
         subscription_info = self.convert_nested_dictionary(subscription_obj)
-        query_start_time = self.get_three_month_ago_date()
+        query_start_time = self._get_three_month_ago_date()
 
+        if not SubscriptionsConnector.region_display_map:
+            locations = subscription_conn.list_location_info(secret_data["subscription_id"])
+            SubscriptionsConnector.region_display_map = self._create_region_display_map_with_locations_info(locations)
         health_histories = health_history_conn.list_health_history(query_start_time)
         for health_history in health_histories:
             try:
@@ -139,8 +142,17 @@ class HealthHistoryManager(AzureBaseManager):
         return impact_updates_display
 
     @staticmethod
-    def get_three_month_ago_date() -> str:
+    def _get_three_month_ago_date() -> str:
         current_date = datetime.utcnow()
         three_months_ago_date = current_date - relativedelta(months=3)
         first_day_three_months_ago = three_months_ago_date.replace(day=1)
         return first_day_three_months_ago.strftime("%Y/%m/%d")
+
+    def _create_region_display_map_with_locations_info(self, locations) -> dict:
+        region_display_map = {}
+        for location in locations:
+            location_info = self.convert_nested_dictionary(location)
+            display_name = location_info.get("display_name")
+            region_name = location_info.get("name")
+            region_display_map[display_name] = region_name
+        return region_display_map
