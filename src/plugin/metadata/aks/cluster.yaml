@@ -1,0 +1,40 @@
+---
+search:
+  fields:
+    - Kubernetes version: data.kubernetes_version
+      date_type: integer
+    - Subscription Name: data.subscription_name
+    - Subscription ID: data.subscription_id
+    - SKU: data.sku.name
+    - SKU Tier: data.sku.tier
+
+
+table:
+  sort:
+    key: data.name
+  fields:
+    - Kubernetes version: data.kubernetes_version
+    - Resource Group: data.resource_group
+    - SKU: data.sku.name
+    - SKU Tier: data.sku.tier
+
+tabs.0:
+  name: Kubernetes
+  type: item
+  fields:
+    - Name: data.name
+    - Kubernetes version: data.kubernetes_version
+    - Subscription ID: data.subscription_id
+    - Subscription Name: data.subscription_name
+    - Resource Group: data.resource_group
+    - Power State: data.power_state.code
+      type: badge
+    - Cluster operation status: data.provisioning_state
+      type: badge
+    - Location: data.location
+    - API server address: data.fqdn
+    - Network configuration: data.network_profile.network_plugin
+
+
+
+
