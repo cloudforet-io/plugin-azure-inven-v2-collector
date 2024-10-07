@@ -38,36 +38,42 @@ class AzureBaseManager(BaseManager):
         raise NotImplementedError("method `create_cloud_service` should be implemented")
 
     @classmethod
-    def list_managers_by_cloud_service_groups(cls, cloud_service_groups: list):
-        if cloud_service_groups in ["All"]:
-            yield from cls.__subclasses__()
-        elif cloud_service_groups:
+    def list_managers_by_cloud_service_groups(cls, cloud_service_groups: list) -> list:
+
+        if cloud_service_groups and "ALL" not in cloud_service_groups:
             for manager in cls.__subclasses__():
-                if manager.cloud_service_group and manager.cloud_service_group in cloud_service_groups:
+                if (
+                    manager.cloud_service_group
+                    and manager.cloud_service_group in cloud_service_groups
+                ):
                     yield manager
         else:
-            yield from cls.__subclasses__()
+            for manager in cls.__subclasses__():
+                if manager.cloud_service_group:
+                    yield manager
 
     @classmethod
     def collect_metrics(cls, cloud_service_group: str):
         if not os.path.exists(os.path.join(_METRIC_DIR, cloud_service_group)):
             os.mkdir(os.path.join(_METRIC_DIR, cloud_service_group))
         for dirname in os.listdir(os.path.join(_METRIC_DIR, cloud_service_group)):
-            for filename in os.listdir(os.path.join(_METRIC_DIR, cloud_service_group, dirname)):
+            for filename in os.listdir(
+                os.path.join(_METRIC_DIR, cloud_service_group, dirname)
+            ):
                 if filename.endswith(".yaml"):
-                    file_path = os.path.join(_METRIC_DIR, cloud_service_group, dirname, filename)
+                    file_path = os.path.join(
+                        _METRIC_DIR, cloud_service_group, dirname, filename
+                    )
                     info = utils.load_yaml_from_file(file_path)
                     if filename == "namespace.yaml":
                         yield make_response(
                             namespace=info,
                             resource_type="inventory.Namespace",
-                            match_keys=[]
+                            match_keys=[],
                         )
                     else:
                         yield make_response(
-                            metric=info,
-                            resource_type="inventory.Metric",
-                            match_keys=[]
+                            metric=info, resource_type="inventory.Metric", match_keys=[]
                         )
 
     def collect_resources(self, options: dict, secret_data: dict, schema: str):
@@ -114,6 +120,7 @@ class AzureBaseManager(BaseManager):
     def collect_cloud_services(self, options: dict, secret_data: dict, schema: str):
         subscription_id = secret_data.get("subscription_id")
         start_time = time.time()
+
         _LOGGER.debug(
             f"[START] Collecting cloud services {self.__repr__()} (subscription_id: {subscription_id})"
         )
@@ -125,7 +132,6 @@ class AzureBaseManager(BaseManager):
             for cloud_service in cloud_services:
                 yield cloud_service
             success_count, error_count = total_count
-
 
         except Exception as e:
             yield make_error_response(
@@ -155,7 +161,7 @@ class AzureBaseManager(BaseManager):
                             "provider",
                             "cloud_service_type",
                             "cloud_service_group",
-                            "account"
+                            "account",
                         ]
                     ],
                 )
@@ -176,18 +182,22 @@ class AzureBaseManager(BaseManager):
     def get_metadata_path(self):
         _cloud_service_group = self._camel_to_snake(self.cloud_service_group)
         _cloud_service_type = self._camel_to_snake(self.cloud_service_type)
-        return os.path.join(_METADATA_DIR, _cloud_service_group, f"{_cloud_service_type}.yaml")
+        return os.path.join(
+            _METADATA_DIR, _cloud_service_group, f"{_cloud_service_type}.yaml"
+        )
 
-    def convert_nested_dictionary(self, cloud_svc_object: object) -> Union[object, dict]:
+    def convert_nested_dictionary(
+        self, cloud_svc_object: object
+    ) -> Union[object, dict]:
         cloud_svc_dict = {}
         if hasattr(
-                cloud_svc_object, "__dict__"
+            cloud_svc_object, "__dict__"
         ):  # if cloud_svc_object is not a dictionary type but has dict method
             cloud_svc_dict = cloud_svc_object.__dict__
         elif isinstance(cloud_svc_object, dict):
             cloud_svc_dict = cloud_svc_object
         elif not isinstance(
-                cloud_svc_object, list
+            cloud_svc_object, list
         ):  # if cloud_svc_object is one of type like int, float, char, ...
             return cloud_svc_object
 
@@ -213,12 +223,9 @@ class AzureBaseManager(BaseManager):
             external_link = external_link_format.format(resource_id=resource_id)
         else:
             external_link = f"https://portal.azure.com/#@.onmicrosoft.com/resource{resource_id}/overview"
-        return {
-            "resource_id": resource_id,
-            "external_link": external_link
-        }
+        return {"resource_id": resource_id, "external_link": external_link}
 
     @staticmethod
     def _camel_to_snake(name):
-        name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
+        name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+        return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
