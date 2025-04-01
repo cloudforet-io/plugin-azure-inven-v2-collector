@@ -1,13 +1,13 @@
-import os
 import abc
-import logging
 import datetime
-import time
+import logging
+import os
 import re
+import time
 from typing import Union
 
-from spaceone.core.manager import BaseManager
 from spaceone.core import utils
+from spaceone.core.manager import BaseManager
 from spaceone.inventory.plugin.collector.lib import *
 
 _LOGGER = logging.getLogger("spaceone")
@@ -53,6 +53,13 @@ class AzureBaseManager(BaseManager):
                     yield manager
 
     @classmethod
+    def get_managers_by_cloud_service_group(cls, cloud_service_group: str):
+        sub_cls = cls.__subclasses__()
+        for manager in sub_cls:
+            if manager.__name__ == cloud_service_group:
+                return manager
+
+    @classmethod
     def collect_metrics(cls, cloud_service_group: str):
         if not os.path.exists(os.path.join(_METRIC_DIR, cloud_service_group)):
             os.mkdir(os.path.join(_METRIC_DIR, cloud_service_group))
@@ -93,7 +100,14 @@ class AzureBaseManager(BaseManager):
                 yield cloud_service
             success_count, error_count = total_count
 
-            yield from self.collect_region(secret_data)
+            subscriptions_manager = (
+                AzureBaseManager.get_managers_by_cloud_service_group(
+                    "SubscriptionsManager"
+                )
+            )
+            location_info = subscriptions_manager().list_location_info(secret_data)
+
+            yield from self.collect_region(location_info)
 
         except Exception as e:
             yield make_error_response(
