@@ -17,6 +17,8 @@ query_options:
       default: true
     - key: data.subscription_id
       name: Subscription ID
+    - key: data.impacted_field
+      name: Impacted Resource Type
     - key: data.impacted_value_display
       name: Impacted Resource Name
     - key: data.extended_properties.term
@@ -29,5 +31,5 @@ query_options:
     value:
       operator: count
 unit: Count
-namespace_id: ns-azure-advisor-recommendations
+namespace_id: ns-azure-advisor-cost
 version: '1.2'

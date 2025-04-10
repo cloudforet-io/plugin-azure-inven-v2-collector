@@ -1,6 +1,6 @@
 ---
 metric_id: metric-azure-advisor-cost-saving
-name: Cost Saving Recommendation
+name: Cost Recommendation Impacted Resource Type Count
 metric_type: GAUGE
 resource_type: inventory.CloudService:azure.Advisor.Cost
 query_options:
@@ -29,8 +29,8 @@ query_options:
       default: true
   fields:
     value:
-      key: data.potential_yearly_savings_based_on_retail_pricing_display
-      operator: sum
-unit: USD
+      key: data.impacted_field
+      operator: count
+unit: Count
 namespace_id: ns-azure-advisor-cost
-version: '1.1'
+version: '1.0'
