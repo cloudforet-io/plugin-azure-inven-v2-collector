@@ -1,5 +1,5 @@
 ---
-metric_id: metric-azure-advisor-cost-saving
+metric_id: metric-azure-advisor-cost-impacted-resource-type-count
 name: Cost Recommendation Impacted Resource Type Count
 metric_type: GAUGE
 resource_type: inventory.CloudService:azure.Advisor.Cost
