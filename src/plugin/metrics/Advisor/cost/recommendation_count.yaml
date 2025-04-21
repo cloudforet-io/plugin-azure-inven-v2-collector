@@ -24,6 +24,8 @@ query_options:
     - key: data.extended_properties.term
       name: Term
       default: true
+    - key: data.short_description.problem
+      name: Description
     - key: data.extended_properties.lookbackPeriod
       name: Look-back period (days)
       default: true
